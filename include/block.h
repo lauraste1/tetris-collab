@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 using namespace std;
 
 class Block{
@@ -14,7 +15,7 @@ class Block{
         squiggley,
         square
     };
-    Block(Block::Shape shape);
+    Block(Block::Shape shape, bool mirror);
     void flip();
     int shift(int dx, int dy);
     string toString();

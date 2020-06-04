@@ -8,7 +8,5 @@ class GameBoard{
     Block current;
     Block preview;
   public:
-
-
-}
+};
 
