@@ -1,11 +1,12 @@
 #pragma once
 #include <string>
+#include <array>
 
 using namespace std;
 
 class Block{
   private:
-    bool cells[4][4];
+    array<array<char,4>,4> cells;
     int x;
     int y;
   public:
