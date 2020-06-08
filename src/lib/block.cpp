@@ -1,7 +1,4 @@
 #include "block.h"
-#include <iostream>
-#include <string>
-#include <array>
 
 using namespace std;
 // This is the constructor. It runs when a *value* of type Block is created.
