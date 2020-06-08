@@ -18,11 +18,12 @@ class Display {
     SDL_Window* window;
     SDL_Surface* screenSurface;
     static const int BLOCK_W = 36;
-    const int RES_W = 360;
-    const int RES_H = 540;
+    const int RES_W = 432;
+    const int RES_H = 828;
   public:
     Display();
     ~Display();
+    void draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds);
     void blit(SDL_Surface* from_surf, SDL_Rect* bounds, int x_idx, int y_idx);
     bool update();
 };

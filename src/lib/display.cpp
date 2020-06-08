@@ -21,8 +21,24 @@ Display::~Display() {
 }
 
 void Display::blit(SDL_Surface* from_surf, SDL_Rect* bounds, int x_idx, int y_idx) {
-    SDL_Rect to_rect = { x_idx * BLOCK_W, y_idx * BLOCK_W, BLOCK_W, BLOCK_W };
+    SDL_Rect to_rect = { (1+x_idx) * BLOCK_W, (1+y_idx) * BLOCK_W, BLOCK_W, BLOCK_W };
     SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
+}
+
+void Display::draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds) {
+    SDL_Rect to_rect;
+    for(int i=0;i<12;i++) {
+        to_rect = { i * BLOCK_W, 0 * BLOCK_W, BLOCK_W, BLOCK_W };
+        SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
+        to_rect = { i * BLOCK_W, 22 * BLOCK_W, BLOCK_W, BLOCK_W };
+        SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
+    }
+    for(int j=0;j<23;j++) {
+        to_rect = { 0 * BLOCK_W, j * BLOCK_W, BLOCK_W, BLOCK_W };
+        SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
+        to_rect = { 11 * BLOCK_W, j * BLOCK_W, BLOCK_W, BLOCK_W };
+        SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
+    }
 }
 
 bool Display::update() {
