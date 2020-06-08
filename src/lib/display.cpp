@@ -25,6 +25,11 @@ void Display::blit(SDL_Surface* from_surf, SDL_Rect* bounds, int x_idx, int y_id
     SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
 }
 
+void Display::clearCell(int x_idx, int y_idx) {
+    SDL_Rect to_rect = { (1+x_idx) * BLOCK_W, (1+y_idx) * BLOCK_W, BLOCK_W, BLOCK_W };
+    SDL_FillRect(screenSurface, &to_rect, 0);
+}
+
 void Display::draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds) {
     SDL_Rect to_rect;
     for(int i=0;i<12;i++) {
@@ -41,14 +46,31 @@ void Display::draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds) {
     }
 }
 
-bool Display::update() {
-    SDL_UpdateWindowSurface( window );
+Display::Event Display::getEvent() {
     SDL_Event e;
     while ( SDL_PollEvent( &e ) != 0 ) {
-        if ( e.key.keysym.sym == SDLK_q ) return false;
+        if ( e.key.state == SDL_RELEASED ) continue;
+        switch ( e.key.keysym.sym ) {
+          case SDLK_UP:
+            return UP;
+          case SDLK_DOWN:
+            return DOWN;
+          case SDLK_LEFT:
+            return LEFT;
+          case SDLK_RIGHT:
+            return RIGHT;
+          case SDLK_q:
+            return QUIT;
+          case SDLK_ESCAPE:
+            return QUIT;
+        }
     }
+    return NONE;
+}
+
+void Display::update() {
+    SDL_UpdateWindowSurface( window );
     SDL_Delay( 16 );
-    return true;
 } 
 
 SpriteSheet::SpriteSheet(const char *path) {
