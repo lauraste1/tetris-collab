@@ -1,10 +1,13 @@
 #pragma once
+#include <iostream>
 #include <string>
+#include <array>
+
 using namespace std;
 
 class Block{
   private:
-    bool cells[4][4];
+    array<array<char,4>,4> cells;
     int x;
     int y;
   public:
@@ -14,7 +17,7 @@ class Block{
         squiggley,
         square
     };
-    Block(Block::Shape shape);
+    Block(Block::Shape shape, bool mirror);
     void flip();
     int shift(int dx, int dy);
     string toString();
