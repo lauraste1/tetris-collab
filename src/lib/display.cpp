@@ -1,4 +1,5 @@
 #include "display.hpp"
+#include <iostream>
 
 Display::Display() {
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
@@ -60,9 +61,12 @@ Display::Event Display::getEvent() {
           case SDLK_RIGHT:
             return RIGHT;
           case SDLK_q:
-            return QUIT;
-          case SDLK_ESCAPE:
-            return QUIT;
+            if (e.key.keysym.mod & KMOD_CTRL )
+              return QUIT;
+            break;
+        }
+        if ( e.window.event == SDL_WINDOWEVENT_CLOSE ) {
+          return QUIT;
         }
     }
     return NONE;

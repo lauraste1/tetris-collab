@@ -1,11 +1,20 @@
+#include <csignal>
 #include "display.hpp"
 
 using namespace std;
+
+void signalHandler(int signum) {
+  cout << "Received signal " << signum;
+  exit(0);
+}
 
 int main() {
     Display disp;
     SpriteSheet sprites("data/tetris.bmp");
     disp.draw_bg(sprites.spriteSurf, &sprites.sprites[7]);
+    signal(SIGINT, signalHandler);
+    signal(SIGABRT, signalHandler);
+    signal(SIGTERM, signalHandler);
 
     for (int i=0;i<7;i++) {
       disp.blit(sprites.spriteSurf, &sprites.sprites[i], i, 0);
