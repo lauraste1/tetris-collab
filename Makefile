@@ -8,13 +8,15 @@ TARGET := bin/tetris
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g -Wall -Wextra -pedantic
-LIB := -L build/lib/*
+CFLAGS := -g -Wall -Wextra -pedantic -lSDL
+LIB := -L build/lib/* -lSDL2
 INC := -I include
+LINKER_FLAGS := -lSDL2
 
 $(TARGET): $(OBJECTS)
+  @mkdir -p bin
   @echo " Linking..."
-  @echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB)
+  @echo " $(CC) $< -o $(TARGET) $(LIB)"; $(CC) $< -o $(TARGET) $(LINKER_FLAGS) $(LIB)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
   @mkdir -p $(BUILDDIR)
