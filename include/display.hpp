@@ -21,9 +21,21 @@ class Display {
     const int RES_W = 432;
     const int RES_H = 828;
   public:
+    enum Event {
+      UP,
+      DOWN,
+      LEFT,
+      RIGHT,
+      QUIT,
+      NONE
+    };
     Display();
     ~Display();
     void draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds);
     void blit(SDL_Surface* from_surf, SDL_Rect* bounds, int x_idx, int y_idx);
-    bool update();
+    void clearCell(int x_idx, int y_idx);
+    Event getEvent();
+    void update();
 };
+
+
