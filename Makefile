@@ -1,4 +1,3 @@
-.RECIPEPREFIX += 
 CC := g++ 
 SRCDIR := src
 TSTDIR := test
