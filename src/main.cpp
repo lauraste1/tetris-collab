@@ -15,9 +15,6 @@ struct DummyGameBoard {
     int state;
     pair<int,int> front_pos;
     pair<int,int> back_pos;
-    vector<pair<int,Display::Event>> *moves;
-    Display::Event front_dir;
-    Display::Event back_dir;
 };
 
 // Gameboard or maybe user could be responsible for this?
@@ -25,54 +22,10 @@ struct DummyGameBoard {
 // and put in logic for making a block do things
 void advance_tick(Display *disp, SpriteSheet *sprites, DummyGameBoard *board) {
     int i = board->state;
-
-    // Check for the move that was made 5 ticks ago.
-    if (board->moves->size() > 0 && (*board->moves)[0].first + 5 <= board->state) {
-      board->back_dir = (*board->moves)[0].second;
-      // This is bad, don't do this.
-      board->moves->erase(board->moves->begin());
-    }
-
-    // Move the snake's head.
-    switch (board->front_dir) {
-      case Display::RIGHT:
-        board->front_pos.first += 1;
-        break;
-      case Display::LEFT:
-        board->front_pos.first -= 1;
-        break;
-      case Display::UP:
-        board->front_pos.second -= 1;
-        break;
-      case Display::DOWN:
-        board->front_pos.second += 1;
-        break;
-    }
-    // Wrap around the board.
-    board->front_pos.first += WIDTH;
-    board->front_pos.first %= WIDTH;
-    board->front_pos.second += HEIGHT;
-    board->front_pos.second %= HEIGHT;
-
-    // Move the snake's tail.
-    switch (board->back_dir) {
-      case Display::RIGHT:
-        board->back_pos.first += 1;
-        break;
-      case Display::LEFT:
-        board->back_pos.first -= 1;
-        break;
-      case Display::UP:
-        board->back_pos.second -= 1;
-        break;
-      case Display::DOWN:
-        board->back_pos.second += 1;
-        break;
-    }
-    board->back_pos.first += WIDTH;
+    board->front_pos.first += 1;
+    board->back_pos.first += 1;
     board->back_pos.first %= WIDTH;
-    board->back_pos.second += HEIGHT;
-    board->back_pos.second %= HEIGHT;
+    board->front_pos.first %= WIDTH;
     board->state += 1;
 
     // An example of relatively efficient sprite-based drawing.
@@ -102,9 +55,7 @@ int main() {
     disp.draw_bg(sprites.spriteSurf, &sprites.sprites[7]);
 
     // This would be replaced with our GameBoard.
-    vector<pair<int,Display::Event>> moves;
-    DummyGameBoard board { 0, make_pair(5,0), make_pair(0,0),
-                           &moves, Display::RIGHT, Display::RIGHT };
+    DummyGameBoard board { 0, make_pair(5,0), make_pair(0,0)};
 
     auto now = chrono::steady_clock::now;
     auto begin = now();
@@ -137,12 +88,6 @@ int main() {
                 break;
               default:
                 break;
-            }
-            // This is just part of the snake game, flip and drop
-            // and similar would probably go here.
-            if ( ev != Display::QUIT ) {
-              board.moves->push_back(make_pair(board.state, ev));
-              board.front_dir = ev;
             }
         }
         // This would be something like game_board.update() or do_tick() or similar.
