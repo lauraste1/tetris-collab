@@ -1,4 +1,3 @@
-.RECIPEPREFIX += 
 CC := g++ 
 SRCDIR := src
 TSTDIR := test
@@ -14,22 +13,22 @@ INC := -I include
 LINKER_FLAGS := -lSDL2
 
 $(TARGET): $(OBJECTS)
-  @mkdir -p bin
-  @echo " Linking..."
-  @echo " $(CC) $< -o $(TARGET) $(LIB)"; $(CC) $< -o $(TARGET) $(LINKER_FLAGS) $(LIB)
+	@mkdir -p bin
+	@echo " Linking..."
+	@echo " $(CC) $< -o $(TARGET) $(LIB)"; $(CC) $< -o $(TARGET) $(LINKER_FLAGS) $(LIB)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-  @mkdir -p $(BUILDDIR)
-  @mkdir -p $(BUILDDIR)/lib 
-  @echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@mkdir -p $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)/lib 
+	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-  @echo " Cleaning..."; 
-  @echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
+	@echo " Cleaning..."; 
+	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
 # Tests
 bin/%: $(TSTDIR)/%.$(SRCEXT)
-  $(CC) $(CFLAGS) $(INC) $(LIB) -o $@ $< build/lib/*
+	$(CC) $(CFLAGS) $(INC) $(LIB) -o $@ $< build/lib/*
 
 test: bin/test_block
 

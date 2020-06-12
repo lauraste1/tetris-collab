@@ -21,7 +21,6 @@ struct DummyGameBoard {
 // TODO: For now, just replace DummyGameBoard with an actual game board
 // and put in logic for making a block do things
 void advance_tick(Display *disp, SpriteSheet *sprites, DummyGameBoard *board) {
-    int i = board->state;
     board->front_pos.first += 1;
     board->back_pos.first += 1;
     board->back_pos.first %= WIDTH;
