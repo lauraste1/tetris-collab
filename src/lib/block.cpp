@@ -1,34 +1,81 @@
-#include "block.h"
+#include "../../include/block.hpp"
 
 using namespace std;
-// This is the constructor. It runs when a *value* of type Block is created.
-// ie. with `Block my_block(Block::l_piece, true)`
+
 Block::Block(Block::Shape shape, bool mirror) {
-    // The members are just accessible by their name.
     switch (shape) {
-        case straight:
-            cells = array<array<char,4>,4> {{{0,1,0,0},{0,1,0,0},{0,1,0,0},{0,1,0,0}}};
+        case straight: {
+            int value[4][4] = {{0,0,0,0},{1,1,1,1},{0,0,0,0},{0,0,0,0}};
+            memcpy(cells, value, sizeof(value));
             break;
-        case l_piece:
-            cells = array<array<char,4>,4> {{{0,1,0,0},{0,1,0,0},{0,1,1,0},{0,0,0,0}}};
+        }
+        case l_piece: {
+            if (mirror) {
+                int value[4][4] = {{0,0,0,0},{0,1,1,1},{0,1,0,0},{0,0,0,0}};
+                memcpy(cells, value, sizeof(value));
+            } else {
+                int value[4][4] = {{0,0,0,0},{0,1,1,1},{0,0,0,1},{0,0,0,0}};
+                memcpy(cells, value, sizeof(value));
+            }
             break;
-        case squiggley:
-            cells = array<array<char,4>,4> {{{0,0,0,0},{0,1,1,0},{0,0,1,1},{0,0,0,0}}};
+        }
+        case squiggley: {
+            if (mirror) {
+                int value[4][4] = {{0,0,0,0},{0,0,1,1},{0,1,1,0},{0,0,0,0}};
+                memcpy(cells, value, sizeof(value));
+            } else {
+                int value[4][4] = {{0,0,0,0},{0,1,1,0},{0,0,1,1},{0,0,0,0}};
+                memcpy(cells, value, sizeof(value));
+            }
             break;
-        case square:
-            cells = array<array<char,4>,4> {{{0,0,0,0},{0,1,1,0},{0,1,1,0},{0,0,0,0}}};
+        }
+        case square: {
+            int value[4][4] = {{0,0,0,0},{0,1,1,0},{0,1,1,0},{0,0,0,0}};
+            memcpy(cells, value, sizeof(value));
             break;
-    }
-    if (mirror) { //Do something to get the other version of l_piece and squiggley 
+        }
+        case t_piece: {
+            int value[4][4] = {{0,0,0,0},{0,1,1,1},{0,0,1,0},{0,0,0,0}};
+            memcpy(cells, value, sizeof(value));
+            break;
+        }
     }
 }
 
-// These are other methods, they run with my_block.flip()
-// You can probably call them from each other, ah.
-// There's an automagically created this pointer.
-// So flip could call `this->shift(1,1)` if it also needed to shift.
-void Block::flip(){
+string Block::toString() {
+    string piece;
+    for (int i=0; i<4; i++) {
+        for (int j=0; j<4; j++) {
+            piece.append(to_string(cells[i][j]));
+            if (j==3) {
+            piece.append("\n");
+            }
+        }
+    }
+    return piece;
 }
+
+
+void Block::flip(int rotation) {
+    int flipped_cells[4][4];    
+    for (int i=0; i<4; i++) {
+        for (int j=0; j<4; j++) {
+            if (rotation == 1)
+                flipped_cells[3-j][i]=cells[i][j];
+            if (rotation == 2)
+                flipped_cells[3-i][3-j]=cells[i][j];
+            if (rotation == 3)
+                flipped_cells[j][3-i]=cells[i][j];
+        }
+    }
+    memcpy(cells, flipped_cells, sizeof(flipped_cells));
+}
+/*
+No rotation: newarray[j][i] = oldarray[j][i]
+1 step counterclockwise: newarray[4 – i][j] = oldarray[j][i]
+2 step counterclockwise: newarray[4 – j][4 – i] = oldarray[j][i]
+3 step counterclockwise: newarray[i][4-j] = oldarray[j][i]
+*/
 
 int Block::shift(int dx, int dy) {
     return 0;
@@ -40,10 +87,5 @@ int Block::getX() {
 
 int Block::getY() {
     return y;
-}
-
-
-string Block::toString() {
-    return string("abc");
 }
 
