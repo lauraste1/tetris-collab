@@ -1,3 +1,4 @@
+#include <cstring>
 #include "../../include/block.hpp"
 
 using namespace std;
