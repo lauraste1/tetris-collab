@@ -8,7 +8,6 @@ class Block{
     int cells[4][4];
     int x;
     int y;
-    int rotation;
 
   public:
     enum Shape {
@@ -18,6 +17,7 @@ class Block{
         square,
         t_piece
     };
+    int rotation;
     Block(Block::Shape shape, bool mirror);
     void flip(int rotation);
     int shift(int dx, int dy);

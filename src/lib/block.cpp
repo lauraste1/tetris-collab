@@ -71,15 +71,9 @@ void Block::flip(int rotation) {
     }
     memcpy(cells, flipped_cells, sizeof(flipped_cells));
 }
-/*
-No rotation: newarray[j][i] = oldarray[j][i]
-1 step counterclockwise: newarray[4 – i][j] = oldarray[j][i]
-2 step counterclockwise: newarray[4 – j][4 – i] = oldarray[j][i]
-3 step counterclockwise: newarray[i][4-j] = oldarray[j][i]
-*/
 
 int Block::shift(int dx, int dy) {
-    return 0;
+    return dx+dy;
 }
 
 int Block::getX() {

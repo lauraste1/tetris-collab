@@ -8,7 +8,7 @@ using namespace std;
 using namespace std::chrono;
 
 const int WIDTH = 10;
-const int HEIGHT = 21;
+//const int HEIGHT = 21;
 
 // Just a way to have some state while gameboard is still not complete.
 struct DummyGameBoard {
