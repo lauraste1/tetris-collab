@@ -5,7 +5,6 @@ using namespace std;
 
 class Block{
   private:
-    int cells[4][4];
     int x;
     int y;
 
@@ -17,6 +16,8 @@ class Block{
         square,
         t_piece
     };
+    int cells[4][4];
+    bool isCell(int y, int x);
     int rotation;
     Block(Block::Shape shape, bool mirror);
     void flip(int rotation);

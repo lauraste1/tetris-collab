@@ -76,6 +76,10 @@ int Block::shift(int dx, int dy) {
     return dx+dy;
 }
 
+bool Block::isCell(int y, int x) {
+    ;
+}
+
 int Block::getX() {
     return x;
 }
