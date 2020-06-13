@@ -17,9 +17,9 @@ void GameBoard::toString() {
             cout << grid[i][j];
 }
 
-int getCell(Block current, int y, int x) {
-	if (current.cells[x][y])
-        return current.cells[x][y];
+int GameBoard::getCell(int y, int x) {
+	if (grid[x][y])
+        return grid[x][y];
     return -1;
 }
 
