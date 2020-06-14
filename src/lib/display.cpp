@@ -92,6 +92,11 @@ pair<int, int> Display::getPx(int x, int y) {
   return make_pair(x * BLOCK_W, y * BLOCK_W);
 }
 
+
+void SpriteSheet::setColor(char r, char b, char g) {
+  SDL_SetSurfaceColorMod(spriteSurf, r, g, b);
+}
+
 SpriteSheet::SpriteSheet(const char *path, int num_sprites, int sprite_w, int sprite_h, int gap_w): 
   num_sprites(num_sprites), sprite_w(sprite_w), sprite_h(sprite_h), gap_w(gap_w) {
     spriteSurf = SDL_LoadBMP(path);

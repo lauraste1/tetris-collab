@@ -64,7 +64,16 @@ int main() {
     SpriteSheet sprites("data/tetris.bmp", 8, 36, 36, 8);
     SpriteSheet font("data/font.bmp", 96, 11, 18, 0);
     disp.draw_bg(sprites.spriteSurf, &sprites.sprites[7], 10,21);
+    font.setColor(255,0,0);
     writeText(string("Hello World! 0123"), &font, &disp, 13, 3);
+    font.setColor(255,255,0);
+    writeText(string("Hello World! 0123"), &font, &disp, 13, 4);
+    font.setColor(0,255,0);
+    writeText(string("Hello World! 0123"), &font, &disp, 13, 5);
+    font.setColor(0,255,255);
+    writeText(string("Hello World! 0123"), &font, &disp, 13, 6);
+    font.setColor(0,0,255);
+    writeText(string("Hello World! 0123"), &font, &disp, 13, 7);
 
     // This would be replaced with our GameBoard.
     DummyGameBoard board { 0, make_pair(5,0), make_pair(0,0)};
