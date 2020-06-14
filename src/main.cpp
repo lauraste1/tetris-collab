@@ -47,19 +47,24 @@ void signalHandler(int signum) {
   exit(0);
 }
 
+void writeText(string text, SpriteSheet *font, Display *disp,  int x, int y) {
+    int offset = 0;
+    auto xy = disp->getPx(x, y);
+    int x_margin = (36 - 11) / 2;
+    int y_margin = (36 - 18) / 2;
+    for (char c: text) {
+      auto *curr_sprite = &font->sprites[c - ' '];
+      disp->blitPixel(font->spriteSurf, curr_sprite, xy.first + offset + x_margin, xy.second + y_margin);
+      offset += curr_sprite->w;
+    }
+}
+
 int main() {
     Display disp(18,21);
     SpriteSheet sprites("data/tetris.bmp", 8, 36, 36, 8);
     SpriteSheet font("data/font.bmp", 96, 11, 18, 0);
     disp.draw_bg(sprites.spriteSurf, &sprites.sprites[7], 10,21);
-
-    int offset = 0;
-    for (char c: "HELLOworld01234") {
-      if (c == '\0') break; // C strings are stuuupid.
-      auto *curr_sprite = &font.sprites[c - ' '];
-      disp.blitPixel(font.spriteSurf, curr_sprite, 100 + offset, 100);
-      offset += curr_sprite->w;
-    }
+    writeText(string("Hello World! 0123"), &font, &disp, 13, 3);
 
     // This would be replaced with our GameBoard.
     DummyGameBoard board { 0, make_pair(5,0), make_pair(0,0)};

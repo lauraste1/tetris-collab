@@ -1,6 +1,9 @@
 #pragma once
 #include "SDL2/SDL.h"
 #include <iostream>
+#include <utility>
+
+using namespace std;
 
 class SpriteSheet {
   private:
@@ -37,6 +40,7 @@ class Display {
     void blit(SDL_Surface* from_surf, SDL_Rect* bounds, int x_idx, int y_idx);
     void blitPixel(SDL_Surface* from_surf, SDL_Rect* bounds, int x_px, int y_px);
     void clearCell(int x_idx, int y_idx);
+    pair<int,int> getPx(int x, int y);
     Event getEvent();
     void update();
 };

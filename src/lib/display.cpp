@@ -1,5 +1,8 @@
 #include "display.hpp"
+#include <utility>
 #include <iostream>
+
+using namespace std;
 
 Display::Display(int width, int height) : width(width), height(height) {
     // 2 is for border around drawable area.
@@ -84,6 +87,10 @@ void Display::update() {
     SDL_UpdateWindowSurface( window );
     SDL_Delay( 16 );
 } 
+
+pair<int, int> Display::getPx(int x, int y) {
+  return make_pair(x * BLOCK_W, y * BLOCK_W);
+}
 
 SpriteSheet::SpriteSheet(const char *path, int num_sprites, int sprite_w, int sprite_h, int gap_w): 
   num_sprites(num_sprites), sprite_w(sprite_w), sprite_h(sprite_h), gap_w(gap_w) {
