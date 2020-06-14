@@ -7,7 +7,6 @@ class Block{
   private:
     const static int BLOCK_W = 4;
     const static int BLOCK_H = 4;
-    int cells[BLOCK_H][BLOCK_W];
     int x;
     int y;
 
@@ -19,6 +18,8 @@ class Block{
         square,
         t_piece
     };
+    int cells[BLOCK_H][BLOCK_W];
+    bool isCell(int y, int x);
     int rotation;
     Block(Block::Shape shape, bool mirror);
     void flip(int rotation);
