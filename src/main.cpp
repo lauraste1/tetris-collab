@@ -50,13 +50,15 @@ void signalHandler(int signum) {
 int main() {
     Display disp(18,21);
     SpriteSheet sprites("data/tetris.bmp", 8, 36, 36, 8);
-    SpriteSheet font("data/font.bmp", 36, 22, 36, 0);
+    SpriteSheet font("data/font.bmp", 96, 11, 18, 0);
     disp.draw_bg(sprites.spriteSurf, &sprites.sprites[7], 10,21);
 
-    int i=0;
-    for (char c: "HELLO") {
+    int offset = 0;
+    for (char c: "HELLOworld01234") {
       if (c == '\0') break; // C strings are stuuupid.
-      disp.blitPixel(font.spriteSurf, &font.sprites[c - 'A'], 100 + 22*i++, 100);
+      auto *curr_sprite = &font.sprites[c - ' '];
+      disp.blitPixel(font.spriteSurf, curr_sprite, 100 + offset, 100);
+      offset += curr_sprite->w;
     }
 
     // This would be replaced with our GameBoard.

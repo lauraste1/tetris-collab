@@ -11,7 +11,7 @@ class SpriteSheet {
 
   public:
     SDL_Surface* spriteSurf;
-    SDL_Rect sprites[36]; //TODO: Make this not static.
+    SDL_Rect sprites[96]; //TODO: Make this not static.
     SpriteSheet(const char *path, int num_sprites, int sprite_w, int sprite_h, int gap_w);
 };
 
