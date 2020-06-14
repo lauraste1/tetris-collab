@@ -48,9 +48,16 @@ void signalHandler(int signum) {
 }
 
 int main() {
-    Display disp(10,21);
-    SpriteSheet sprites("data/tetris.bmp", 8);
-    disp.draw_bg(sprites.spriteSurf, &sprites.sprites[7]);
+    Display disp(18,21);
+    SpriteSheet sprites("data/tetris.bmp", 8, 36, 36, 8);
+    SpriteSheet font("data/font.bmp", 36, 22, 36, 0);
+    disp.draw_bg(sprites.spriteSurf, &sprites.sprites[7], 10,21);
+
+    int i=0;
+    for (char c: "HELLO") {
+      if (c == '\0') break; // C strings are stuuupid.
+      disp.blitPixel(font.spriteSurf, &font.sprites[c - 'A'], 100 + 22*i++, 100);
+    }
 
     // This would be replaced with our GameBoard.
     DummyGameBoard board { 0, make_pair(5,0), make_pair(0,0)};

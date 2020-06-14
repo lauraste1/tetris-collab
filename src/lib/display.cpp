@@ -29,23 +29,28 @@ void Display::blit(SDL_Surface* from_surf, SDL_Rect* bounds, int x_idx, int y_id
     SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
 }
 
+void Display::blitPixel(SDL_Surface* from_surf, SDL_Rect* bounds, int x_px, int y_px) {
+    SDL_Rect to_rect = { x_px, y_px, bounds->w, bounds->h };
+    SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
+}
+
 void Display::clearCell(int x_idx, int y_idx) {
     SDL_Rect to_rect = { (1+x_idx) * BLOCK_W, (1+y_idx) * BLOCK_W, BLOCK_W, BLOCK_W };
     SDL_FillRect(screenSurface, &to_rect, 0);
 }
 
-void Display::draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds) {
+void Display::draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds, int bg_width, int bg_height) {
     SDL_Rect to_rect;
-    for(int i=0;i < (width + 2);i++) {
+    for(int i=0;i < (bg_width + 2);i++) {
         to_rect = { i * BLOCK_W, 0 * BLOCK_W, BLOCK_W, BLOCK_W };
         SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
-        to_rect = { i * BLOCK_W, (height + 1) * BLOCK_W, BLOCK_W, BLOCK_W };
+        to_rect = { i * BLOCK_W, (bg_height + 1) * BLOCK_W, BLOCK_W, BLOCK_W };
         SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
     }
-    for(int j=0;j < (height + 2);j++) {
+    for(int j=0;j < (bg_height + 2);j++) {
         to_rect = { 0 * BLOCK_W, j * BLOCK_W, BLOCK_W, BLOCK_W };
         SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
-        to_rect = { (width+ 1) * BLOCK_W, j * BLOCK_W, BLOCK_W, BLOCK_W };
+        to_rect = { (bg_width+ 1) * BLOCK_W, j * BLOCK_W, BLOCK_W, BLOCK_W };
         SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
     }
 }
@@ -80,16 +85,16 @@ void Display::update() {
     SDL_Delay( 16 );
 } 
 
-SpriteSheet::SpriteSheet(const char *path, int num_sprites) : num_sprites(num_sprites) {
+SpriteSheet::SpriteSheet(const char *path, int num_sprites, int sprite_w, int sprite_h, int gap_w): 
+  num_sprites(num_sprites), sprite_w(sprite_w), sprite_h(sprite_h), gap_w(gap_w) {
     spriteSurf = SDL_LoadBMP(path);
-
     if ( spriteSurf == NULL ) {
         printf( "Unable to load sprites: %s\n", SDL_GetError() );
         throw("SDL Load failure.");
     }
 
-    int stride = SPRITE_W + GAP_W;
+    int stride = sprite_w + gap_w;
     for (int i=0;i< num_sprites;i++) 
-        sprites[i] = { GAP_W / 2 + stride * i, GAP_W / 2, SPRITE_W, SPRITE_W};
+        sprites[i] = { gap_w / 2 + stride * i, gap_w / 2, sprite_w, sprite_h};
 }
 

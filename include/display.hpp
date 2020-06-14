@@ -4,14 +4,15 @@
 
 class SpriteSheet {
   private:
-    static const int GAP_W = 8;
-    static const int SPRITE_W = 36;
     const int num_sprites;
-  public:
-    SDL_Surface* spriteSurf = NULL;
-    SDL_Rect sprites[8];
+    const int sprite_w;
+    const int sprite_h;
+    const int gap_w;
 
-    SpriteSheet(const char *path, int num_sprites);
+  public:
+    SDL_Surface* spriteSurf;
+    SDL_Rect sprites[36]; //TODO: Make this not static.
+    SpriteSheet(const char *path, int num_sprites, int sprite_w, int sprite_h, int gap_w);
 };
 
 class Display {
@@ -32,8 +33,9 @@ class Display {
     };
     Display(int width, int height);
     ~Display();
-    void draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds);
+    void draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds, int bg_width, int bg_height);
     void blit(SDL_Surface* from_surf, SDL_Rect* bounds, int x_idx, int y_idx);
+    void blitPixel(SDL_Surface* from_surf, SDL_Rect* bounds, int x_px, int y_px);
     void clearCell(int x_idx, int y_idx);
     Event getEvent();
     void update();
