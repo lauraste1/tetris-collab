@@ -8,7 +8,6 @@ using namespace std;
 using namespace std::chrono;
 
 const int WIDTH = 10;
-//const int HEIGHT = 21;
 
 // Just a way to have some state while gameboard is still not complete.
 struct DummyGameBoard {
@@ -49,8 +48,8 @@ void signalHandler(int signum) {
 }
 
 int main() {
-    Display disp;
-    SpriteSheet sprites("data/tetris.bmp");
+    Display disp(10,21);
+    SpriteSheet sprites("data/tetris.bmp", 8);
     disp.draw_bg(sprites.spriteSurf, &sprites.sprites[7]);
 
     // This would be replaced with our GameBoard.

@@ -1,7 +1,10 @@
 #include "display.hpp"
 #include <iostream>
 
-Display::Display() {
+Display::Display(int width, int height) : width(width), height(height) {
+    // 2 is for border around drawable area.
+    const int RES_W = BLOCK_W * (2 + width);
+    const int RES_H = BLOCK_W * (2 + height);
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
         printf("SDL failed to initialize: %s\n", SDL_GetError());
         throw("SDL init failure");
@@ -33,16 +36,16 @@ void Display::clearCell(int x_idx, int y_idx) {
 
 void Display::draw_bg(SDL_Surface* from_surf, SDL_Rect* bounds) {
     SDL_Rect to_rect;
-    for(int i=0;i<12;i++) {
+    for(int i=0;i < (width + 2);i++) {
         to_rect = { i * BLOCK_W, 0 * BLOCK_W, BLOCK_W, BLOCK_W };
         SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
-        to_rect = { i * BLOCK_W, 22 * BLOCK_W, BLOCK_W, BLOCK_W };
+        to_rect = { i * BLOCK_W, (height + 1) * BLOCK_W, BLOCK_W, BLOCK_W };
         SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
     }
-    for(int j=0;j<23;j++) {
+    for(int j=0;j < (height + 2);j++) {
         to_rect = { 0 * BLOCK_W, j * BLOCK_W, BLOCK_W, BLOCK_W };
         SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
-        to_rect = { 11 * BLOCK_W, j * BLOCK_W, BLOCK_W, BLOCK_W };
+        to_rect = { (width+ 1) * BLOCK_W, j * BLOCK_W, BLOCK_W, BLOCK_W };
         SDL_BlitSurface(from_surf, bounds, screenSurface, &to_rect);
     }
 }
@@ -77,7 +80,7 @@ void Display::update() {
     SDL_Delay( 16 );
 } 
 
-SpriteSheet::SpriteSheet(const char *path) {
+SpriteSheet::SpriteSheet(const char *path, int num_sprites) : num_sprites(num_sprites) {
     spriteSurf = SDL_LoadBMP(path);
 
     if ( spriteSurf == NULL ) {
@@ -86,7 +89,7 @@ SpriteSheet::SpriteSheet(const char *path) {
     }
 
     int stride = SPRITE_W + GAP_W;
-    for (int i=0;i<8;i++) 
+    for (int i=0;i< num_sprites;i++) 
         sprites[i] = { GAP_W / 2 + stride * i, GAP_W / 2, SPRITE_W, SPRITE_W};
 }
 

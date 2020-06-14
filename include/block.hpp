@@ -5,7 +5,9 @@ using namespace std;
 
 class Block{
   private:
-    int cells[4][4];
+    const static int BLOCK_W = 4;
+    const static int BLOCK_H = 4;
+    int cells[BLOCK_H][BLOCK_W];
     int x;
     int y;
 
