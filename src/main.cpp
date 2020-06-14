@@ -51,7 +51,7 @@ void writeText(string text, SpriteSheet *font, Display *disp,  int x, int y) {
     int offset = 0;
     auto xy = disp->getPx(x, y);
     int x_margin = (36 - 11) / 2;
-    int y_margin = (36 - 18) / 2;
+    int y_margin = (36 - 22) / 2;
     for (char c: text) {
       auto *curr_sprite = &font->sprites[c - ' '];
       disp->blitPixel(font->spriteSurf, curr_sprite, xy.first + offset + x_margin, xy.second + y_margin);
@@ -62,7 +62,7 @@ void writeText(string text, SpriteSheet *font, Display *disp,  int x, int y) {
 int main() {
     Display disp(18,21);
     SpriteSheet sprites("data/tetris.bmp", 8, 36, 36, 8);
-    SpriteSheet font("data/font.bmp", 96, 11, 18, 0);
+    SpriteSheet font("data/font.bmp", 96, 11, 22, 0);
     disp.draw_bg(sprites.spriteSurf, &sprites.sprites[7], 10,21);
     font.setColor(255,0,0);
     writeText(string("Hello World! 0123"), &font, &disp, 13, 3);
