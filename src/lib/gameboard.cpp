@@ -20,9 +20,16 @@ void GameBoard::toString() {
 int GameBoard::getCell(int y, int x) {
 	if (grid[x][y])
         return grid[x][y];
-    return -1;
+  return -1;
 }
 
-void GameBoard::collide(Block current) {
-    ;
+bool GameBoard::collide(Block current) {
+  for (int i=current.x; i<(current.x + 4); i++) {
+    for (int j=current.y; j<(current.y + 4); j++) {
+      if ((current.isCell(j-current.y, i-current.x)) && (getCell(j,i))==0) {
+        return true;
+      }
+    }
+  }
+  return false;
 }

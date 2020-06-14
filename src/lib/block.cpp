@@ -4,6 +4,8 @@
 using namespace std;
 
 Block::Block(Block::Shape shape, bool mirror) {
+    x = 21;
+    y = 4;
     switch (shape) {
         case straight: {
             int value[4][4] = {{0,0,0,0},{1,1,1,1},{0,0,0,0},{0,0,0,0}};
@@ -77,7 +79,14 @@ int Block::shift(int dx, int dy) {
 }
 
 bool Block::isCell(int y, int x) {
-    ;
+    for (int i=0; i<4; i++) {
+        for (int j=0; j<4; j++) {
+            if (cells[i][j]==1) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 int Block::getX() {
