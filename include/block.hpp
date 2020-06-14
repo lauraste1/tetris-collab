@@ -23,7 +23,7 @@ class Block{
     int rotation;
     Block(Block::Shape shape, bool mirror);
     void flip(int rotation);
-    int shift(int dx, int dy);
+    void shift(int dx, int dy);
     string toString();
     int getX();
     int getY();

@@ -1,10 +1,10 @@
 #include <cstring>
-#include "../../include/block.hpp"
+#include "block.hpp"
 
 using namespace std;
 
 Block::Block(Block::Shape shape, bool mirror) {
-    x = 21;
+    x = 0;
     y = 4;
     switch (shape) {
         case straight: {
@@ -74,18 +74,14 @@ void Block::flip(int rotation) {
     memcpy(cells, flipped_cells, sizeof(flipped_cells));
 }
 
-int Block::shift(int dx, int dy) {
-    return dx+dy;
+void Block::shift(int dx, int dy) {
+    x += dx;
+    y += dy;
 }
 
 bool Block::isCell(int y, int x) {
-    for (int i=0; i<4; i++) {
-        for (int j=0; j<4; j++) {
-            if (cells[i][j]==1) {
-                return true;
-            }
-        }
-    }
+    if (cells[x][y]>0)
+        return true;
     return false;
 }
 
@@ -96,4 +92,3 @@ int Block::getX() {
 int Block::getY() {
     return y;
 }
-

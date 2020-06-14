@@ -15,9 +15,10 @@ class GameBoard{
     void* removeRow();
     void* lockInRow();
     void* pendinglockIn();
-    GameBoard();
-    bool collide(Block current);
+    bool checkCollision(Block current);
     int getCell(int y, int x);
   public:
+    GameBoard();
     void toString();
+    void printGameBoard(Block current);
 };
