@@ -33,6 +33,19 @@ bool GameBoard::checkCollision(Block current) {
   }
   return false;
 }
+/*
+void GameBoard::lockInRow(Block current) {
+  for (int i=current.x; i<(current.x + 4); i++) {
+    for (int j=current.y; j<(current.y + 4); j++) {
+      if (current.isCell(j-current.y, i-current.x)) {
+        grid[i][j]=2;
+      }
+    }
+  }
+}*/
+
+
+//void* pendinglockIn();
 
 void GameBoard::printGameBoard(Block current) {
     for (int i=0; i<ROWS; i++) {
