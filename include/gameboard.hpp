@@ -1,25 +1,31 @@
-#include "block.hpp"
+#ifndef GAMEBOARD_H
+#define GAMEBOARD_H
+
 #include <iostream>
 #include <vector>
-#pragma once
+
+#include "block.hpp"
 using namespace std;
 
 #define COLS 10
 #define ROWS 21
 
-class GameBoard{
+class GameBoard {
   private:
-    int grid[ROWS][COLS];
+    int grid[COLS][ROWS];
     int score;
-    vector <pair<int,int>> free_positions;
-    Block current=Block(Block::straight, false);
-    //Block preview;
-    void* removeRow();
-    void* lockInRow();
-    void* pendinglockIn();
+    vector<pair<int, int>> free_positions;
+    Block current = Block(Block::straight, false);
+    // Block preview;
+    void *removeRow();
+    void *lockInRow();
+    void *pendinglockIn();
     GameBoard();
-    void collide(Block current);
-    int getCell(int y, int x);
+    void collide();
+    int getCell(int x, int y);
+
   public:
     void toString();
 };
+
+#endif
