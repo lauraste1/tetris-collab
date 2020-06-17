@@ -82,7 +82,7 @@ void Block::shift(int dx, int dy) {
 bool Block::isCell(int y, int x) {
     if ((y < 0) || (y > 3) || (x < 0) || (x > 3))
         return false;
-    if (cells[x][y]>0)
+    if (cells[y][x]>0)
         return true;
     return false;
 }

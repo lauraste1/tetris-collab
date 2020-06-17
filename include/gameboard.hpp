@@ -18,7 +18,7 @@ class GameBoard{
     int getCell(int y, int x);
   public:
     int state;
-    Block current;
+    Block current = Block(Block::squiggley, false);
     GameBoard();
     void toString();
     void printGameBoard(Block current);

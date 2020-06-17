@@ -73,8 +73,7 @@ int main() {
     // This would be replaced with our GameBoard.
     //DummyGameBoard board { 0, make_pair(5,0), make_pair(0,0)};
     GameBoard board = GameBoard();
-    board.current = Block(Block::l_piece, false);
-
+    board.current = Block(Block::squiggley, false);
     auto now = chrono::steady_clock::now;
     auto begin = now();
 
@@ -93,15 +92,19 @@ int main() {
               case Display::QUIT:
                 return 0;
               case Display::LEFT:
+                board.current.shift(-1,0);
                 cout << "Left\n";
                 break;
               case Display::RIGHT:
+                board.current.shift(1,0);
                 cout << "Right\n";
                 break;
               case Display::UP:
+                board.current.flip(1);
                 cout << "UP\n";
                 break;
               case Display::DOWN:
+                board.current.shift(0,1);
                 cout << "DOWN\n";
                 break;
               default:
