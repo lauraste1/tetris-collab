@@ -7,7 +7,7 @@ TARGET := bin/tetris
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g -std=c++11 -Wall -Wextra -pedantic
+CFLAGS := -g -std=c++11 -Wall -Wshadow -Wformat=2 -Wextra -pedantic -O2
 LIB := -L build/lib/*
 INC := -I include
 LINKER_FLAGS := -lSDL2
