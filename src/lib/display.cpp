@@ -1,8 +1,8 @@
 #include <iostream>
 #include <utility>
 
-#include "displ.hpp"
 #include "SDL2/SDL.h"
+#include "displ.hpp"
 
 using namespace std;
 

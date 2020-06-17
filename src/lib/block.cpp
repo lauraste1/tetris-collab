@@ -1,9 +1,12 @@
-#include "block.hpp"
 #include <cstring>
+
+#include "block.hpp"
 
 using namespace std;
 
 Block::Block(Block::Shape shape, bool mirror) {
+    x = 4;
+    y = 0;
     switch (shape) {
     case straight: {
         int value[4][4] = {
@@ -50,6 +53,11 @@ Block::Block(Block::Shape shape, bool mirror) {
     }
 }
 
+Block::Block() {
+    int value[4][4] = {{0, 0, 0, 0}, {0, 1, 1, 1}, {0, 0, 1, 0}, {0, 0, 0, 0}};
+    memcpy(cells, value, sizeof(value));
+}
+
 string Block::toString() {
     string piece;
     for (int i = 0; i < 4; i++) {
@@ -65,7 +73,7 @@ string Block::toString() {
 
 void Block::flip(int new_rotation) {
     int flipped_cells[4][4];
-	rotation = new_rotation;
+    rotation = new_rotation;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             if (rotation == 1)
@@ -79,9 +87,18 @@ void Block::flip(int new_rotation) {
     memcpy(cells, flipped_cells, sizeof(flipped_cells));
 }
 
-int Block::shift(int dx, int dy) { return dx + dy; }
+void Block::shift(int dx, int dy) {
+    x += dx;
+    y += dy;
+}
 
-bool Block::isCell(int x_test, int y_test) { return y_test | x_test; }
+bool Block::isCell(int x_idx, int y_idx) {
+    if ((y_idx < 0) || (y_idx > 3) || (x_idx < 0) || (x_idx > 3))
+        return false;
+    if (cells[x_idx][y_idx] > 0)
+        return true;
+    return false;
+}
 
 int Block::getX() { return x; }
 

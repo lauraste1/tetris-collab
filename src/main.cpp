@@ -4,44 +4,42 @@
 #include <utility>
 #include <vector>
 
+#include "block.hpp"
 #include "displ.hpp"
+#include "gameboard.hpp"
 
 using namespace std;
 using namespace std::chrono;
 
 const int WIDTH = 10;
+const int HEIGHT = 21;
 
-// Just a way to have some state while gameboard is still not complete.
-struct DummyGameBoard {
-    int state;
-    pair<int, int> front_pos;
-    pair<int, int> back_pos;
-};
+void clear_block(Displ *disp, GameBoard *board) {
+    for (int i = board->current.x; i < board->current.x + 4; i++) {
+        for (int j = board->current.y; j < board->current.y + 4; j++) {
+            disp->clearCell(i, j);
+        }
+    }
+}
 
-// Gameboard or maybe user could be responsible for this?
-// TODO: For now, just replace DummyGameBoard with an actual game board
-// and put in logic for making a block do things
-void advance_tick(Displ *disp, SpriteSheet *sprites, DummyGameBoard *board) {
-    board->front_pos.first += 1;
-    board->back_pos.first += 1;
-    board->back_pos.first %= WIDTH;
-    board->front_pos.first %= WIDTH;
+void draw_block(Displ *disp, SpriteSheet *sprites, GameBoard *board) {
+    int x = board->current.x;
+    int y = board->current.y;
+    for (int i = x; i < x + 4; i++) {
+        for (int j = y; j < y + 4; j++) {
+            if (board->current.isCell(j - (y), i - (x)) ||
+                board->getCell(i, j) == 1) {
+                disp->blit(sprites->spriteSurf, &sprites->sprites[0], i, j);
+            }
+        }
+    }
+}
+
+void advance_tick(Displ *disp, SpriteSheet *sprites, GameBoard *board) {
+    board->current.shift(0, 1);
+    clear_block(disp, board);
     board->state += 1;
-
-    // An example of relatively efficient sprite-based drawing.
-    // Draw the new sprites.
-    disp->blit(sprites->spriteSurf, &sprites->sprites[0],
-               board->front_pos.first, board->front_pos.second);
-    // Erase the old.
-    disp->clearCell(board->back_pos.first, board->back_pos.second);
-    // Anything else is just left, ostensibly this creates less work,
-    // but modern computers are so powerful that the whole thing is usually
-    // redrawn anyway and it only takes microseconds. (and there are a bunch of
-    // benefits to doing this).
-    //
-    // It just so happens that this method maps well to things like tetris and
-    // snake you can just erase the block and redraw it, leaving the rest of the
-    // game board alone.
+    draw_block(disp, sprites, board);
 }
 
 void signalHandler(int signum) {
@@ -78,16 +76,12 @@ int main() {
     font.setColor(0, 0, 255);
     writeText(string("Hello World! 0123"), &font, &disp, 13, 7);
 
-    // This would be replaced with our GameBoard.
-    DummyGameBoard board{0, make_pair(5, 0), make_pair(0, 0)};
+    GameBoard board;
+    board.current = Block(Block::l_piece, false);
 
     auto now = chrono::steady_clock::now;
     auto begin = now();
 
-    // Also insert events at this point
-    //
-    // could even have a data structure for events
-    // so they are replayable.
     signal(SIGINT, signalHandler);
     signal(SIGABRT, signalHandler);
     signal(SIGTERM, signalHandler);
@@ -114,9 +108,7 @@ int main() {
                 break;
             }
         }
-        // This would be something like game_board.update() or do_tick() or
-        // similar.
-        if (gameTime.count() / 200 > board.state) {
+        if (gameTime.count() / 400 > board.state) {
             advance_tick(&disp, &sprites, &board);
         }
 

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "block.hpp"
+
 using namespace std;
 
 #define COLS 10
@@ -15,17 +16,19 @@ class GameBoard {
     int grid[COLS][ROWS];
     int score;
     vector<pair<int, int>> free_positions;
-    Block current = Block(Block::straight, false);
-    // Block preview;
-    void *removeRow();
-    void *lockInRow();
-    void *pendinglockIn();
-    GameBoard();
-    void collide();
-    int getCell(int x, int y);
 
   public:
+    void removeRow();
+    void pendinglockIn();
+    void collide();
+    int getCell(int x, int y);
+    void lockInRow();
+    bool checkCollision();
+    int state;
+    Block current;
+    GameBoard();
     void toString();
+    void printGameBoard();
 };
 
 #endif
