@@ -11,9 +11,6 @@
 using namespace std;
 using namespace std::chrono;
 
-const int WIDTH = 10;
-const int HEIGHT = 21;
-
 void clear_block(Displ *disp, GameBoard *board) {
     for (int i = board->current.x; i < board->current.x + 4; i++) {
         for (int j = board->current.y; j < board->current.y + 4; j++) {
@@ -111,6 +108,8 @@ int main() {
             default:
                 break;
             }
+            clear_block(&disp, &board);
+            draw_block(&disp, &sprites, &board);
         }
         if (gameTime.count() / 400 > board.state) {
             advance_tick(&disp, &sprites, &board);
