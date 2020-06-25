@@ -33,8 +33,8 @@ void draw_block(Displ *disp, SpriteSheet *sprites, GameBoard *board) {
 }
 
 void advance_tick(Displ *disp, SpriteSheet *sprites, GameBoard *board) {
-    board->current.shift(0, 1);
     clear_block(disp, board);
+    board->current.shift(0, 1);
     board->state += 1;
     draw_block(disp, sprites, board);
 }
