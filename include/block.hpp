@@ -11,7 +11,7 @@ class Block {
     const static int BLOCK_H = 4;
 
   public:
-    enum Shape { l_piece, straight, squiggley, square, t_piece };
+    enum Shape { l_piece = 1 , straight = 2, squiggley = 3, square = 4, t_piece = 5 };
     int x;
     int y;
     int cells[BLOCK_H][BLOCK_W];

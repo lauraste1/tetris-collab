@@ -2,23 +2,29 @@
 #include <utility>
 
 #include "SDL2/SDL.h"
-#include "displ.hpp"
+#include "../../include/displ.hpp"
 
 using namespace std;
 
+// Rename as Video_Wraper?
 Displ::Displ(int width, int height) {
     // 2 is for border around drawable area.
+    // Resolution in pixels.
     const int RES_W = BLOCK_W * (2 + width);
     const int RES_H = BLOCK_W * (2 + height);
+    // Initialization function, does a bunch of stuff behind the scenes
+    // depending on OS
+    // INIT_VIDEO is a constant that tells it which things to initialize.
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL failed to initialize: %s\n", SDL_GetError());
+        cout << "SDL failed to initialize: " << SDL_GetError();
         throw("SDL init failure");
     }
+
     window = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED, RES_W, RES_H,
                               SDL_WINDOW_SHOWN);
     if (window == NULL) {
-        printf("Window could not be created: %s\n", SDL_GetError());
+        cout << "Window could not be created: " << SDL_GetError();
         throw("SDL window failure");
     }
     screenSurface = SDL_GetWindowSurface(window);
@@ -27,8 +33,10 @@ Displ::Displ(int width, int height) {
 Displ::~Displ() {
     SDL_FreeSurface(screenSurface);
     SDL_DestroyWindow(window);
+    // TODO: Look up how to make singleton?
     SDL_Quit();
 }
+
 
 void Displ::blit(SDL_Surface *from_surf, SDL_Rect *bounds, int x_idx,
                  int y_idx) {
@@ -83,6 +91,8 @@ Displ::Event Displ::getEvent() {
         case SDLK_q:
             if (e.key.keysym.mod & KMOD_CTRL)
                 return QUIT;
+            break;
+        default:
             break;
         }
         if (e.window.event == SDL_WINDOWEVENT_CLOSE) {

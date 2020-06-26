@@ -4,9 +4,9 @@
 #include <utility>
 #include <vector>
 
-#include "block.hpp"
-#include "displ.hpp"
-#include "gameboard.hpp"
+#include "../include/block.hpp"
+#include "../include/displ.hpp"
+#include "../include/gameboard.hpp"
 
 using namespace std;
 using namespace std::chrono;
@@ -14,30 +14,65 @@ using namespace std::chrono;
 const int WIDTH = 10;
 const int HEIGHT = 21;
 
+// Auto formatting -- I personally hate auto brackets but some people like them.
+// Autocomplete
+// Error tagging
+//
+// Break points
+// Integrated debugger
+// Learning how to use gdb
+//
 void clear_block(Displ *disp, GameBoard *board) {
     for (int i = board->current.x; i < board->current.x + 4; i++) {
         for (int j = board->current.y; j < board->current.y + 4; j++) {
-            disp->clearCell(i, j);
+            if (board->current.isCell(j - board->current.y, i - board->current.x) &&
+                (i >= 0 && i < WIDTH) && 
+                (j >= 0 && j < HEIGHT))
+                disp->clearCell(i, j);
         }
     }
 }
 
+bool isOutOfBounds(int x, int y) {
+    return x < 0 || x >= WIDTH || y < 0 || y > HEIGHT;
+}
+
+bool pendingLocking(Displ *disp, GameBoard *board) {
+    int x = board->current.x;
+    int y = board->current.y;
+    for (int i = x; i < x + 4; i++) {
+        for (int j = y; j < y + 4; j++) {
+            if (board->current.isCell(j - y, i - x)){
+                if ((board->getCell(j+1, x) != 0) || isOutOfBounds(j+x, x))
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Display was a bad name because it collided with something in a library somewhere.
 void draw_block(Displ *disp, SpriteSheet *sprites, GameBoard *board) {
     int x = board->current.x;
     int y = board->current.y;
     for (int i = x; i < x + 4; i++) {
         for (int j = y; j < y + 4; j++) {
-            if (board->current.isCell(j - (y), i - (x)) ||
-                board->getCell(i, j) == 1) {
+            if ((board->current.isCell(j - (y), i - (x)) ||
+                board->getCell(i, j) == 1) && 
+                (i >= 0 && i < WIDTH) && 
+                (j >= 0 && j < HEIGHT)
+                ) {
                 disp->blit(sprites->spriteSurf, &sprites->sprites[0], i, j);
             }
         }
     }
 }
 
+
 void advance_tick(Displ *disp, SpriteSheet *sprites, GameBoard *board) {
-    board->current.shift(0, 1);
+    // Will clear the background if it lines up with the top of the block.
     clear_block(disp, board);
+    board->current.shift(0, 1);
     board->state += 1;
     draw_block(disp, sprites, board);
 }
@@ -47,6 +82,7 @@ void signalHandler(int signum) {
     exit(0);
 }
 
+// TODO: Probably belongs in the video wrapper.
 void writeText(string text, SpriteSheet *font, Displ *disp, int x, int y) {
     int offset = 0;
     auto xy = disp->getPx(x, y);
@@ -85,28 +121,36 @@ int main() {
     signal(SIGINT, signalHandler);
     signal(SIGABRT, signalHandler);
     signal(SIGTERM, signalHandler);
+
     Displ::Event ev;
     while (1) {
         auto gameTime = chrono::duration_cast<milliseconds>(now() - begin);
+        int dx=0;
+        int dy=0;
+        bool flip = false;
         while (Displ::NONE != (ev = disp.getEvent())) {
             switch (ev) {
             case Displ::QUIT:
                 return 0;
             case Displ::LEFT:
-                cout << "Left\n";
+                dx = -1;
                 break;
             case Displ::RIGHT:
-                cout << "Right\n";
+                dx = 1;
                 break;
             case Displ::UP:
-                cout << "UP\n";
+                flip = true;
                 break;
             case Displ::DOWN:
-                cout << "DOWN\n";
+                dy = 1;
                 break;
             default:
                 break;
             }
+            clear_block(&disp, &board);
+            board.current.shift(dx, dy);
+            if (flip) board.current.flip(1);
+            draw_block(&disp, &sprites, &board);
         }
         if (gameTime.count() / 400 > board.state) {
             advance_tick(&disp, &sprites, &board);
