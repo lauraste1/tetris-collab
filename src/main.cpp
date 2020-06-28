@@ -13,6 +13,7 @@ using namespace std::chrono;
 
 const int WIDTH = 10;
 const int HEIGHT = 21;
+static bool quit = false;
 
 void clear_block(Displ *disp, GameBoard *board) {
     for (int i = board->current.x; i < board->current.x + 4; i++) {
@@ -44,7 +45,7 @@ void advance_tick(Displ *disp, SpriteSheet *sprites, GameBoard *board) {
 
 void signalHandler(int signum) {
     cout << "Received signal " << signum;
-    exit(0);
+    quit = true;
 }
 
 void writeText(string text, SpriteSheet *font, Displ *disp, int x, int y) {
@@ -86,12 +87,13 @@ int main() {
     signal(SIGABRT, signalHandler);
     signal(SIGTERM, signalHandler);
     Displ::Event ev;
-    while (1) {
+    while (!quit) {
         auto gameTime = chrono::duration_cast<milliseconds>(now() - begin);
         while (Displ::NONE != (ev = disp.getEvent())) {
             switch (ev) {
             case Displ::QUIT:
-                return 0;
+                quit = true;
+                break;
             case Displ::LEFT:
                 cout << "Left\n";
                 break;

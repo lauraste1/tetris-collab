@@ -17,6 +17,7 @@ class SpriteSheet {
     void setColor(uint8_t r, uint8_t b, uint8_t g);
     SpriteSheet(const char *path, int num_sprites, int sprite_w, int sprite_h,
                 int gap_w);
+    ~SpriteSheet();
 };
 
 class Displ {

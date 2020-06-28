@@ -27,6 +27,7 @@ Displ::Displ(int width, int height) {
 Displ::~Displ() {
     SDL_FreeSurface(screenSurface);
     SDL_DestroyWindow(window);
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
     SDL_Quit();
 }
 
@@ -116,4 +117,8 @@ SpriteSheet::SpriteSheet(const char *path, int num_sprites, int sprite_w,
     int stride = sprite_w + gap_w;
     for (int i = 0; i < num_sprites; i++)
         sprites[i] = {gap_w / 2 + stride * i, gap_w / 2, sprite_w, sprite_h};
+}
+
+SpriteSheet::~SpriteSheet() {
+    SDL_FreeSurface(spriteSurf);
 }

@@ -3,3 +3,4 @@ build
 data/tetris.bmp
 *.swp
 *.swo
+compile_options.json
