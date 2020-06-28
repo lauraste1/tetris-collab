@@ -37,8 +37,8 @@ void draw_block(Displ *disp, SpriteSheet *sprites, GameBoard *board) {
 }
 
 void advance_tick(Displ *disp, SpriteSheet *sprites, GameBoard *board) {
-    board->current.shift(0, 1);
     clear_block(disp, board);
+    board->current.shift(0, 1);
     board->state += 1;
     draw_block(disp, sprites, board);
 }
@@ -95,20 +95,26 @@ int main() {
                 quit = true;
                 break;
             case Displ::LEFT:
+                board.current.shift(-1,0);
                 cout << "Left\n";
                 break;
             case Displ::RIGHT:
+                board.current.shift(1,0);
                 cout << "Right\n";
                 break;
             case Displ::UP:
+                board.current.flip(1);
                 cout << "UP\n";
                 break;
             case Displ::DOWN:
+                board.current.shift(0,1);
                 cout << "DOWN\n";
                 break;
             default:
                 break;
             }
+            clear_block(&disp, &board);
+            draw_block(&disp, &sprites, &board);
         }
         if (gameTime.count() / 400 > board.state) {
             advance_tick(&disp, &sprites, &board);

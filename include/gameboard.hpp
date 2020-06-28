@@ -25,7 +25,7 @@ class GameBoard {
     void lockInRow();
     bool checkCollision();
     int state;
-    Block current;
+    Block current = Block(Block::squiggley, false);
     GameBoard();
     void toString();
     void printGameBoard();
