@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "block.hpp"
+#include "displ.hpp"
 
 using namespace std;
 
@@ -16,10 +17,10 @@ class GameBoard {
     int grid[COLS][ROWS];
     int score;
     vector<pair<int, int>> free_positions;
-
   public:
     void removeRow();
-    void pendinglockIn();
+    bool isOutOfBounds(int x, int y);
+    bool pendingLockIn(Video_Wrapper *disp, GameBoard *board);
     void collide();
     int getCell(int x, int y);
     void lockInRow();

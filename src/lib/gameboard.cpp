@@ -3,6 +3,7 @@
 #include <string>
 
 #include "gameboard.hpp"
+#include "displ.hpp"
 
 using namespace std;
 
@@ -41,8 +42,23 @@ void GameBoard::lockInRow() {
         grid[j][i]=2;
 }
 
+bool GameBoard::isOutOfBounds(int x, int y) {
+    return x < 0 || x >= COLS || y < 0 || y > ROWS;
+}
 
-//void* pendinglockIn();
+bool GameBoard::pendingLockIn(Video_Wrapper *disp, GameBoard *board) {
+    int x = board->current.x;
+    int y = board->current.y;
+    for (int i = x; i < x + 4; i++) {
+        for (int j = y; j < y + 4; j++) {
+            if (board->current.isCell(j - y, i - x)){
+                if ((board->getCell(j+1, x) != 0) || isOutOfBounds(j+x, x))
+                    return true;
+            }
+        }
+    }
+    return false;
+}
 
 /*
 void GameBoard::removeRow() {

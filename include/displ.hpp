@@ -1,5 +1,5 @@
-#ifndef DISPL_H
-#define DISPL_H
+#ifndef Video_Wrapper_H
+#define Video_Wrapper_H
 
 #include <iostream>
 #include <utility>
@@ -19,7 +19,7 @@ class SpriteSheet {
                 int gap_w);
 };
 
-class Displ {
+class Video_Wrapper {
   private:
     SDL_Window *window;
     SDL_Surface *screenSurface;
@@ -27,14 +27,15 @@ class Displ {
 
   public:
     enum Event { UP, DOWN, LEFT, RIGHT, QUIT, NONE };
-    Displ(int width, int height);
-    ~Displ();
+    Video_Wrapper(int width, int height);
+    ~Video_Wrapper();
     void draw_bg(SDL_Surface *from_surf, SDL_Rect *bounds, int bg_width,
                  int bg_height);
     void blit(SDL_Surface *from_surf, SDL_Rect *bounds, int x_idx, int y_idx);
     void blitPixel(SDL_Surface *from_surf, SDL_Rect *bounds, int x_px,
                    int y_px);
     void clearCell(int x_idx, int y_idx);
+    void writeText(string text, SpriteSheet *font, Video_Wrapper *disp, int x, int y);
     pair<int, int> getPx(int x, int y);
     Event getEvent();
     void update();

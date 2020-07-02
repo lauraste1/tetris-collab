@@ -10,7 +10,7 @@ Block::Block(Block::Shape shape, bool mirror) {
     switch (shape) {
     case straight: {
         int value[4][4] = {
-            {0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+            {0, 0, 0, 0}, {2, 2, 2, 2}, {0, 0, 0, 0}, {0, 0, 0, 0}};
         memcpy(cells, value, sizeof(value));
         break;
     }
@@ -29,24 +29,24 @@ Block::Block(Block::Shape shape, bool mirror) {
     case squiggley: {
         if (mirror) {
             int value[4][4] = {
-                {0, 0, 0, 0}, {0, 0, 1, 1}, {0, 1, 1, 0}, {0, 0, 0, 0}};
+                {0, 0, 0, 0}, {0, 0, 3, 3}, {0, 3, 3, 0}, {0, 0, 0, 0}};
             memcpy(cells, value, sizeof(value));
         } else {
             int value[4][4] = {
-                {0, 0, 0, 0}, {0, 1, 1, 0}, {0, 0, 1, 1}, {0, 0, 0, 0}};
+                {0, 0, 0, 0}, {0, 3, 3, 0}, {0, 0, 3, 3}, {0, 0, 0, 0}};
             memcpy(cells, value, sizeof(value));
         }
         break;
     }
     case square: {
         int value[4][4] = {
-            {0, 0, 0, 0}, {0, 1, 1, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}};
+            {0, 0, 0, 0}, {0, 4, 4, 0}, {0, 4, 4, 0}, {0, 0, 0, 0}};
         memcpy(cells, value, sizeof(value));
         break;
     }
     case t_piece: {
         int value[4][4] = {
-            {0, 0, 0, 0}, {0, 1, 1, 1}, {0, 0, 1, 0}, {0, 0, 0, 0}};
+            {0, 0, 0, 0}, {0, 5, 5, 5}, {0, 0, 5, 0}, {0, 0, 0, 0}};
         memcpy(cells, value, sizeof(value));
         break;
     }
